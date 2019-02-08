@@ -1,4 +1,8 @@
 const StaticData = require("../models/StaticData");
+const path = require("path");
+// const staticData = require("../../public/static-data");
+const staticDataPath = require.resolve("../../public/static-data");
+const fs = require("fs");
 
 const {
   getCurrentPatch,
@@ -22,6 +26,19 @@ const createStaticData = () => {
       })
       .then(response => {
         staticData.summonerSpellData = buildSummonerSpellObject(response);
+        staticData.name = "Dan";
+        //Rewrite static-data.json in PUBLIC folder:
+        // const filePath = `${__dirname}`;
+        console.log(staticDataPath);
+        fs.writeFile(
+          staticDataPath,
+          JSON.stringify(staticData),
+          "utf8",
+          err => {
+            if (err) console.log(err);
+            console.log("Rewrote static-data.json");
+          }
+        );
         //Delete existing Document from mongoDB:
         return StaticData.deleteMany({});
       })

@@ -1,32 +1,22 @@
 const express = require("express");
 const router = express.Router();
-// const rateLimit = require("express-rate-limit");
 
 const { getActiveMatchData } = require("../functions/riotAPI");
 const { staticDataLimiter, activeMatchLimiter } = require("./middleware");
+const staticData = require("../public/static-data");
 const findStaticData = require("../database/functions/findStaticData");
 
-// const staticDataLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000,
-//   max: 50
-// });
-
-// const activeMatchLimiter = rateLimit({
-//   windowMs: 5 * 60 * 1000,
-//   max: 10
-// });
-
 router.get("/static-data", staticDataLimiter, (req, res, next) => {
-  findStaticData()
-    .then(response => {
-      res.status(200).send(response);
-    })
-    .catch(error => {
-      res.status(404).send("Could not access database.");
-    });
+  res.status(200).json(staticData);
+  // findStaticData()
+  //   .then(response => {
+  //     res.status(200).send(response);
+  //   })
+  //   .catch(error => {
+  //     res.status(404).send("Could not access database.");
+  //   });
 });
 
-//GET active match data for Summoner:
 router.get(
   "/active-match/region/:region/summoner/:name",
   activeMatchLimiter,
