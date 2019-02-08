@@ -1,19 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const rateLimit = require("express-rate-limit");
+// const rateLimit = require("express-rate-limit");
 
 const { getActiveMatchData } = require("../functions/riotAPI");
+const { staticDataLimiter, activeMatchLimiter } = require("./middleware");
 const findStaticData = require("../database/functions/findStaticData");
 
-const staticDataLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 50
-});
+// const staticDataLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 50
+// });
 
-const activeMatchLimiter = rateLimit({
-  windowMs: 5 * 60 * 1000,
-  max: 10
-});
+// const activeMatchLimiter = rateLimit({
+//   windowMs: 5 * 60 * 1000,
+//   max: 10
+// });
 
 router.get("/static-data", staticDataLimiter, (req, res, next) => {
   findStaticData()

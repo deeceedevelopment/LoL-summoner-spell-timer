@@ -2,30 +2,32 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const passport = require("passport");
-const rateLimit = require("express-rate-limit");
+// const rateLimit = require("express-rate-limit");
 
 const createStaticData = require("../database/functions/createStaticData");
+const { loginLimiter, populateDatabaseLimiter } = require("./middleware");
+const isAdmin = require("../passport/middleware");
 
 //Middleware to verify Admin Status from user request
-const isAdmin = function(req, res, next) {
-  if (req.isAuthenticated()) {
-    if (req.user.isAdmin) {
-      next();
-    }
-  } else {
-    res.redirect("/admin/login");
-  }
-};
+// const isAdmin = function(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     if (req.user.isAdmin) {
+//       next();
+//     }
+//   } else {
+//     res.redirect("/admin/login");
+//   }
+// };
 
-const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5
-});
+// const loginLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 5
+// });
 
-const populateDatabaseLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10
-});
+// const populateDatabaseLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 10
+// });
 
 router.get(
   "/populate-database",
