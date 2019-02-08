@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>Admin Dashboard</h2>
+    <a href="/admin/logout">Logout</a>
+    <div style="margin-top: 50px"></div>
+    <button id="populate-database-btn">Populate Database</button>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      document
+        .querySelector("#populate-database-btn")
+        .addEventListener("click", function(e) {
+          axios
+            .get("/admin/populate-database")
+            .then(response => {
+              console.log(response);
+            })
+            .catch(error => {
+              console.log("Failed to populate database.");
+            });
+        });
+    </script>
+  </body>
+</html>
